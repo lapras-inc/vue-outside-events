@@ -2,26 +2,30 @@
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-Vue 2.x directive to react on events outside of an element without stopping the event's propagation.
+Vue 3.x directive to react on events outside of an element without stopping the event's propagation.
 
 Works well for handling clicks outside of menus and popups. Can handle any DOM event or CustomEvent. Also able to capture jQuery events.
 
 ## Install
-```js
-npm install --save vue-outside-events
+```bash
+yarn add vue-outside-events
 ```
 
-## Demos
-Check out the highly contrived demos here: [https://nchutchind.github.io/vue-outside-events/docs/index.html](https://nchutchind.github.io/vue-outside-events/docs/index.html)
+```bash
+npm install --save vue-outside-events
+```
 
 ## Use
 
 ### Modular
-```js
-import Vue from 'vue'
+```ts
 import vOutsideEvents from 'vue-outside-events'
 
-Vue.use(vOutsideEvents)
+const app = createApp({
+...
+})
+
+app.use(vOutsideEvents)
 ```
 
 ```html
@@ -71,8 +75,8 @@ Vue.use(vOutsideEvents)
 </div>
 
 <script>
-  new Vue({
-    el: '#app',
+  import { defineComponent } from 'vue'
+  defineComponent({
     methods: {
       onClickOutside (e, el) {
         console.log('onClickOutside');
@@ -137,24 +141,8 @@ onFoo (e, el, extras) {
 }
 ```
 
-## Modifiers
-Add the `jquery` modifier to allow the directive to handle jQuery triggering of custom events. jQuery must be present in the window for this to work.
-
-```html
-<div id="myDiv1" v-event-outside="{ name: 'onFoo', handler: onFooOutside }"></div>
-<div id="myDiv2" v-event-outside.jquery="{ name: 'onFoo', handler: onFooOutside }"></div>
-
-<script>
-  $(document).trigger("onFoo"); // onFooOutside will be called for #myDiv2, but not #myDiv1
-
-  var event = document.createEvent('Event');
-  event.initEvent('onFoo', true, true);
-  document.dispatchEvent(event); // onFooOutside will be called for #myDiv1 and #myDiv2
-</script>
-```
-
 ## License
-[MIT License](https://github.com/nchutchind/vue-outside-events/blob/master/LICENSE)
+[MIT License](https://github.com/lapras-inc/vue-outside-events/blob/master/LICENSE)
 
 ## Style
 [![Standard - JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
