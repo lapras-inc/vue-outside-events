@@ -33,7 +33,6 @@ const plugin = {
     app.directive(SubmitOutside.directiveName, SubmitOutside)
     app.directive(KeyDownOutside.directiveName, KeyDownOutside)
     app.directive(KeyPressOutside.directiveName, KeyPressOutside)
-    app.directive(KeyPressOutside.directiveName, KeyPressOutside)
     app.directive(KeyUpOutside.directiveName, KeyUpOutside)
     app.directive(CustomEventOutside.directiveName, CustomEventOutside)
   }
