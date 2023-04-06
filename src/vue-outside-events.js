@@ -6,25 +6,25 @@ const createOutsideEvent = (directiveName, eventName) => {
   outsideEvent.directiveName = directiveName
   outsideEvent.eventName = eventName
 
-  outsideEvent.bind = function (el, binding, vNode) {
+  outsideEvent.beforeMount = function (el, binding, vNode) {
     const err = console.error !== undefined ? console.error : console.log
-    let fn = null;
-    let extras = undefined;
+    let fn = null
+    let extras
     if (typeof binding.value !== 'function') {
-      if (typeof binding.value !== 'object' || !binding.value.hasOwnProperty('handler') || typeof binding.value["handler"] !== "function") {
+      if (typeof binding.value !== 'object' || !binding.value.hasOwnProperty('handler') || typeof binding.value['handler'] !== 'function') {
         let error = `[${directiveName}]: provided expression '${binding.expression}' must be a function or an object containing a property named 'handler' that is a function.`
         if (vNode.context.name) {
           error += `\nFound in component '${vNode.context.name}'`
         }
         err(error)
       } else {
-        fn = binding.value["handler"];
+        fn = binding.value['handler']
         // clone the object passed in and remove the handler from it
-        extras = Object.assign({}, binding.value);
-        delete extras["handler"];
+        extras = Object.assign({}, binding.value)
+        delete extras['handler']
       }
     } else {
-      fn = binding.value;
+      fn = binding.value
     }
 
     const handler = (e) => {
@@ -38,7 +38,7 @@ const createOutsideEvent = (directiveName, eventName) => {
     document.addEventListener(eventName, handler)
   }
 
-  outsideEvent.unbind = function (el, binding) {
+  outsideEvent.unmounted = function (el, binding) {
     document.removeEventListener(eventName, el[`__vueEventOutside__${eventName}`])
     el[`__vueEventOutside__${eventName}`] = null
   }
@@ -48,9 +48,9 @@ const createOutsideEvent = (directiveName, eventName) => {
 
 export const CustomEventOutside = {
   directiveName: 'event-outside',
-  bind: function (el, binding, vNode) {
+  beforeMount: function (el, binding, vNode) {
     const err = console.error !== undefined ? console.error : console.log
-    let extras = undefined;
+    let extras
     if (
       // object is required
       typeof binding.value !== 'object' ||
@@ -65,9 +65,9 @@ export const CustomEventOutside = {
       err(error)
       return
     } else {
-      extras = Object.assign({}, binding.value);
-      delete extras.name;
-      delete extras.handler;
+      extras = Object.assign({}, binding.value)
+      delete extras.name
+      delete extras.handler
     }
     if ((binding.modifiers.jquery) && (window.$ === undefined && window.jQuery === undefined)) {
       let error = `[v-event-outside]: jQuery is not present in window.`
@@ -91,7 +91,7 @@ export const CustomEventOutside = {
     }
   },
 
-  unbind: function (el, binding) {
+  unmounted: function (el, binding) {
     if (binding.modifiers.jquery) {
       jQuery(document).off(binding.value.name, el[`__vueEventOutside__${binding.value.name}`])
     } else {
